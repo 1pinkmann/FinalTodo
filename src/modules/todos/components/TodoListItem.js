@@ -1,18 +1,16 @@
 import React from 'react';
 
-export default function TodoListItem (props) {
+export default function TodoListItem ({item, onToggle, onDelete}) {
 
     let onItemClick = () => {
-        props.onToggle(props.item.id);
+        onToggle(item.id);
     };
 
     let onDeleteBtnClick = (e) => {
         e.stopPropagation();
 
-        props.onDelete(props.item.id);
+        onDelete(item.id);
     };
-
-    const { item } = props;
 
     return (
         <li onClick={onItemClick} style={getItemStyle(item)}>

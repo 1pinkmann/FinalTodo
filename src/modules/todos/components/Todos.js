@@ -1,55 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import {
-    createTodo,
-    deleteTodo,
-    getTodos,
-    updateTodo,
-} from '../services/todosService';
+import React from 'react';
+import { connect } from 'react-redux';
+import { createTodo, deleteTodo, toggleTodo, updateTodo } from '../store/actions/actions';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
-export default function Todos() {
-
-    let [listState, setList] = useState([]);
+function Todos({todos, dispatch}) {
 
     let toggleItem = (id) => {
-        const item = listState.find((l) => l.id === id);
-        const newItem = { ...item, completed: !item.completed };
-
-        updateTodo(newItem).then(() => {
-
-            setList(listState.map((item) => item.id !== id ? item : newItem));
-        });
+        dispatch(toggleTodo(id))
     };
 
-    let deleteItem = (id) => {
-        deleteTodo(id);
-
-        setList(listState.filter((item) => item.id !== id));
+    let handleDeleteTodo = (id) => {
+        dispatch(deleteTodo(id))
     };
 
-    let createItem = (newItem) => {
-        newItem.completed = false;
-
-        createTodo(newItem).then((data) => {
-            setList([...listState, data]);
-        });
+    let handleCreateTodo = (newTodo) => {
+        dispatch(createTodo(newTodo))
     };
 
-    useEffect(() => {
-        getTodos().then((list) => {
-            setList(list);
-        });
-    }, []);
+    let handleUpdateTodo = (todo) => {
+        dispatch(updateTodo(todo))
+    };
 
     return (
         <>
             <TodoList
-                list={listState}
+                list={todos}
                 onToggle={toggleItem}
-                onDelete={deleteItem}
+                onDelete={handleDeleteTodo}
+                onChange={handleUpdateTodo}
             />
-            <TodoForm onSave={createItem} />
+            <TodoForm onSave={handleCreateTodo} />
         </>
     );
 }
+
+function mapStateToProps(state) {
+    return { todos: state.todos }
+}
+
+export default connect(mapStateToProps)(Todos);

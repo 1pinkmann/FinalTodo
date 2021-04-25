@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { createTodo, updateTodo } from '../store/actions/actions';
+import { connect } from 'react-redux';
 
-export default function TodoForm (props) {
-
-    let [todo, setTodo] = useState({title: ''})
+function TodoForm ({todo, dispatch}) {
 
     let onFormSubmit = (e) => {
         e.preventDefault();
-
-        props.onSave(todo);
-        setTodo({ title: '' })
+        dispatch(createTodo(todo));
     };
 
     let onInputChange = (e) => {
-        setTodo({ ...todo, [e.target.name]: e.target.value })
+        dispatch(updateTodo({ ...todo, [e.target.name]: e.target.value }))
     };
 
     return (
@@ -27,3 +25,9 @@ export default function TodoForm (props) {
         </form>
     );
 }
+
+function mapStateToProps(state) {
+    return { todo: state.todo }
+}
+
+export default connect(mapStateToProps)(TodoForm);
