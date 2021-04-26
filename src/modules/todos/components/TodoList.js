@@ -1,9 +1,10 @@
+import { List } from '@material-ui/core';
 import React from 'react';
 import TodoListItem from './TodoListItem';
 
 export default function TodoList(props) {
     return (
-        <ul>
+        <List component="ul">
             {props.list.map((item) => (
                 <TodoListItem
                     key={item.id}
@@ -12,6 +13,6 @@ export default function TodoList(props) {
                     onDelete={props.onDelete}
                 />
             ))}
-        </ul>
+        </List>
     );
 }

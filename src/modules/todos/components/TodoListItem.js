@@ -1,6 +1,8 @@
+import { ListItem, ListItemText } from '@material-ui/core';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import React from 'react';
 
-export default function TodoListItem ({item, onToggle, onDelete}) {
+export default function TodoListItem({ item, onToggle, onDelete }) {
 
     let onItemClick = () => {
         onToggle(item.id);
@@ -13,10 +15,12 @@ export default function TodoListItem ({item, onToggle, onDelete}) {
     };
 
     return (
-        <li onClick={onItemClick} style={getItemStyle(item)}>
-            {item.title}
-            <span onClick={onDeleteBtnClick}>X</span>
-        </li>
+        <ListItem button onClick={onItemClick} style={getItemStyle(item)} className="border-top">
+            <ListItemText>{item.title}</ListItemText>
+            <span onClick={onDeleteBtnClick}>
+                <HighlightOffIcon />
+            </span>
+        </ListItem>
     );
 }
 
@@ -24,5 +28,6 @@ function getItemStyle({ completed }) {
     return {
         cursor: 'pointer',
         backgroundColor: completed ? 'green' : 'yellow',
+        color: completed ? '#ffffff' : '#000000',
     };
 }
