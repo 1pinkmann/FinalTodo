@@ -4,21 +4,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { handleRemoveTodo, handleToggleTodo } from './../store/actions/actions';
 
-function TodoListItem({ item, handleToggleTodo, handleRemoveTodo }) {
+function TodoListItem({ todo, handleToggleTodo, handleRemoveTodo }) {
 
     let onItemClick = () => {
-        handleToggleTodo(item);
+        handleToggleTodo(todo);
     };
 
     let onDeleteBtnClick = (e) => {
         e.stopPropagation();
 
-        handleRemoveTodo(item.id);
+        handleRemoveTodo(todo.id);
     };
 
     return (
-        <ListItem button onClick={onItemClick} style={getItemStyle(item)} className="border-top">
-            <ListItemText>{item.title}</ListItemText>
+        <ListItem button onClick={onItemClick} style={getItemStyle(todo)} className="border-top">
+            <ListItemText>{todo.title}</ListItemText>
             <span onClick={onDeleteBtnClick}>
                 <HighlightOffIcon />
             </span>

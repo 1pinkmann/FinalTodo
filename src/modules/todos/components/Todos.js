@@ -1,45 +1,34 @@
-import { Container, Paper, Box } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import { Container, Paper, Box, Button } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { removeTodoAction, toggleTodo } from '../store/actions/actions';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import { fetchTodos } from './../store/actions/actions';
 import store from './../store/store';
 
-function Todos({ todos, toggleTodo, removeTodoAction }) {
+export default function Todos() {
+
+    const [showForm, setShowForm] = useState(false);
+
+    function handleShowForm() {
+        setShowForm(!showForm);
+    }
 
     useEffect(() => {
         store.dispatch(fetchTodos());
     }, [])
-  
-    let toggleItem = (id) => {
-        toggleTodo(id);
-    };
-
-    let handleDeleteTodo = (id) => {
-        removeTodoAction(id);
-    };
 
     return (
         <Container maxWidth="sm">
             <Box height="100vh" display="flex" justifyContent="center" alignItems="center">
                 <Paper className="padding w100" elevation={3}>
-                    <TodoList list={todos}/>
-                    <TodoForm />
+                    <TodoList />
+                    <Box display="flex" justifyContent="center">
+                        <Button variant="contained" color="primary" onClick={handleShowForm}>Add Todo</Button>
+                    </Box>
                 </Paper>
+                <TodoForm showForm={showForm} handleShowForm={handleShowForm}/>
             </Box>
         </Container>
     );
 }
-
-function mapStateToProps(state) {
-    return { todos: state.todos }
-}
-
-let mapDispatchToProps = {
-    toggleTodo,
-    removeTodoAction
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Todos);

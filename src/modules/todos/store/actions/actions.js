@@ -5,11 +5,6 @@ export function removeTodoAction(payload) {
     return { type: ACTION_DELETE_TODO, payload }
 }
 
-export const ACTION_UPDATE_TODO = 'ACTION_UPDATE_TODO';
-export function updateTodo(payload) {
-    return { type: ACTION_UPDATE_TODO, payload }
-}
-
 export const ACTION_CREATE_TODO = 'ACTION_CREATE_TODO';
 export function createTodo(payload) {
     return { type: ACTION_CREATE_TODO, payload }

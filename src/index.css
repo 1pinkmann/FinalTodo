@@ -23,3 +23,22 @@ code {
 .border-top:not(:first-child) {
   border-top: 1px solid #888888e8;
 }
+
+.modal-window {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  transition: opacity 0.3s ease-out;
+}
+
+.modal-window.opened {
+  opacity: 1;
+  z-index: 10;
+}

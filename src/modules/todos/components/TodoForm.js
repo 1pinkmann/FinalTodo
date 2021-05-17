@@ -1,42 +1,99 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { handleSaveTodo } from '../store/actions/actions';
 import { connect } from 'react-redux';
-import { Box, Button, TextField } from '@material-ui/core';
+import { Box, Button, Paper } from '@material-ui/core';
+import { Form, Formik } from 'formik';
+import CustomTextField from '../../../common/CustomTextField';
+import CustomButton from '../../../common/CustomButton';
 
-function TodoForm({ todo, handleSaveTodo }) {
+let formStyles = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+}
 
-    const [todoState, setTodoState] = useState(
-        todo || {
-            title: '',
-            isDone: false,
-        }
-    );
+let paperStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '400px',
+    height: '300px',
+    padding: '30px 60px',
+    boxSizing: 'border-box'
+}
 
-    let onFormSubmit = (e) => {
-        e.preventDefault();
-        handleSaveTodo(todoState);
+let titleStyles = {
+    textTransform: 'uppercase',
+    fontSize: '22px',
+    opacity: '0.8',
+    marginBottom: '20px'
+}
+
+let buttonsStyles = {
+    display: "flex",
+    justifyContent: "space-between",
+    width: '100%'
+}
+
+let selectStyles = {
+    width: '100%',
+    margin: '10px 0'
+}
+
+function TodoForm({ handleSaveTodo, showForm, handleShowForm }) {
+
+    let initialValues = {
+        title: '',
+        isDone: false,
     };
 
-    let onInputChange = (e) => {
-        setTodoState({
-            ...todoState, [e.target.name]: e.target.value
-        });
+    let onSubmit = async (todo, { resetForm }) => {
+        await handleSaveTodo(todo);
+        handleShowForm();
+        resetForm();
     };
+
+    function handleCancel({resetForm}) {
+        handleShowForm();
+        resetForm();
+    }
 
     return (
-        <Box component="form" display="flex" flexDirection="column" alignItems="center" mt={2} onSubmit={onFormSubmit}>
-            <TextField
-                type="text"
-                name="title"
-                value={todoState.title}
-                onChange={onInputChange}
-                label="Add Todo"
-            />
-            <Box mt={2}>
-                <Button variant="outlined" type="submit">Save</Button>
-            </Box>
-        </Box>
+        <div className={"modal-window" + (showForm ? " opened" : "")}>
+            <Paper style={paperStyles}>
+                <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+                    {(formik) => {
+                        return (
+                            <Box style={formStyles} component={Form}>
+                                <h1 style={titleStyles}>Add Todo</h1>
+                                <CustomTextField name="title" as="input" label="Title" placeholder="Enter title" />
+                                <CustomTextField name="isDone" as="select" style={selectStyles} />
+                                <Box style={buttonsStyles} mt={2} >
+                                    <CustomButton variant="outlined" type="submit">Save</CustomButton>
+                                    <Button variant="contained" type="button" onClick={()=>handleCancel(formik)}>Cancel</Button>
+                                </Box>
+                            </Box>
+                        );
+                    }}
+                </Formik>
+            </Paper>
+        </div>
     );
+}
+
+function validate(values) {
+    let errors = {};
+
+    if (!values.title) {
+        errors.title = 'Title is  required';
+    }
+
+    if (values.title.length > 255) {
+        errors.title = 'Title is too long';
+    }
+
+    return errors;
 }
 
 function mapStateToProps(state) {

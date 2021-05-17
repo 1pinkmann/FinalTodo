@@ -1,16 +1,23 @@
 import { List } from '@material-ui/core';
 import React from 'react';
 import TodoListItem from './TodoListItem';
+import { connect } from 'react-redux';
 
-export default function TodoList(props) {
+function TodoList({todos}) {
     return (
         <List component="ul">
-            {props.list.map((item) => (
+            {todos.map((todo) => (
                 <TodoListItem
-                    key={item.id}
-                    item={item}
+                    key={todo.id}
+                    todo={todo}
                 />
             ))}
         </List>
     );
 }
+
+function mapStateToProps(state) {
+    return { todos: state.todos }
+}
+
+export default connect(mapStateToProps)(TodoList);
