@@ -1,8 +1,7 @@
 import { ACTION_DELETE_TODO, ACTION_CREATE_TODO, ACTION_TOGGLE_TODO, ACTION_GET_TODOS } from './../actions/actions';
 
 const initialState = {
-    todos: [],
-    todo: null
+    todos: []
 };
 
 export default function reducer(state = initialState, { type, payload }) {

@@ -1,6 +1,5 @@
 import { Container, Paper, Box, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import { fetchTodos } from './../store/actions/actions';

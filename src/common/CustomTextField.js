@@ -3,7 +3,7 @@ import { Select, TextField, MenuItem } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 
 export default function CustomTextField(props) {
-    let {values, handleChange, handleBlur, touched, errors} = useFormikContext();
+    let {values, handleChange, handleBlur, errors} = useFormikContext();
     let { name } = props;
     let { as } = props;
 
@@ -14,8 +14,8 @@ export default function CustomTextField(props) {
                 value={values[name]}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched[name] && !!errors[name]}
-                helperText={touched[name] && errors[name]}
+                error={!!errors[name]}
+                helperText={errors[name]}
             />
         );
     } else if (as === 'select') {
