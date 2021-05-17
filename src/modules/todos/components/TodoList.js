@@ -9,8 +9,6 @@ export default function TodoList(props) {
                 <TodoListItem
                     key={item.id}
                     item={item}
-                    onToggle={props.onToggle}
-                    onDelete={props.onDelete}
                 />
             ))}
         </List>

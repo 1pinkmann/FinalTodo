@@ -1,34 +1,27 @@
-import { ACTION_UPDATE_TODO, ACTION_DELETE_TODO, ACTION_CREATE_TODO, ACTION_TOGGLE_TODO } from './../actions/actions';
-
-const getEmptyTodo = () => {
-    return { title: '', completed: false, id: Math.random() }
-};
+import { ACTION_DELETE_TODO, ACTION_CREATE_TODO, ACTION_TOGGLE_TODO, ACTION_GET_TODOS } from './../actions/actions';
 
 const initialState = {
-    todos: [
-        { title: 'Todo 1', completed: false, id: 1 },
-        { title: 'Todo 2', completed: true, id: 2 },
-        { title: 'Todo 3', completed: true, id: 3 },
-        { title: 'Todo 4', completed: false, id: 4 }
-    ],
-    todo: getEmptyTodo()
+    todos: [],
+    todo: null
 };
 
 export default function reducer(state = initialState, { type, payload }) {
+
     switch (type) {
+
+        case ACTION_GET_TODOS:
+            return {...state, todos: payload}
+
         case ACTION_DELETE_TODO:
             return { ...state, todos: state.todos.filter((item) => item.id !== payload) }
 
-        case ACTION_UPDATE_TODO:
-            return { ...state, todo: payload }
-
         case ACTION_CREATE_TODO:
-            return { ...state, todos: [...state.todos, payload], todo: getEmptyTodo() }
+            return { ...state, todos: [...state.todos, payload] }
 
         case ACTION_TOGGLE_TODO:
-            const item = state.todos.find((todo) => todo.id === payload);
-            const newItem = { ...item, completed: !item.completed };
-            return { ...state, todos: state.todos.map((todo) => todo.id !== payload ? todo : newItem) }
+            const item = state.todos.find((todo) => todo.id === payload.id);
+            const newItem = { ...item, isDone: !item.isDone };
+            return { ...state, todos: state.todos.map((todo) => todo.id !== payload.id ? todo : newItem) }
 
         default:
             return state;

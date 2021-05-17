@@ -1,17 +1,26 @@
-import React from 'react';
-import { createTodo, updateTodo } from '../store/actions/actions';
+import React, { useState } from 'react';
+import { handleSaveTodo } from '../store/actions/actions';
 import { connect } from 'react-redux';
 import { Box, Button, TextField } from '@material-ui/core';
 
-function TodoForm({ todo, dispatch }) {
+function TodoForm({ todo, handleSaveTodo }) {
+
+    const [todoState, setTodoState] = useState(
+        todo || {
+            title: '',
+            isDone: false,
+        }
+    );
 
     let onFormSubmit = (e) => {
         e.preventDefault();
-        dispatch(createTodo(todo));
+        handleSaveTodo(todoState);
     };
 
     let onInputChange = (e) => {
-        dispatch(updateTodo({ ...todo, [e.target.name]: e.target.value }))
+        setTodoState({
+            ...todoState, [e.target.name]: e.target.value
+        });
     };
 
     return (
@@ -19,7 +28,7 @@ function TodoForm({ todo, dispatch }) {
             <TextField
                 type="text"
                 name="title"
-                value={todo.title}
+                value={todoState.title}
                 onChange={onInputChange}
                 label="Add Todo"
             />
@@ -34,4 +43,8 @@ function mapStateToProps(state) {
     return { todo: state.todo }
 }
 
-export default connect(mapStateToProps)(TodoForm);
+let mapDispatchToProps = {
+    handleSaveTodo
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoForm);

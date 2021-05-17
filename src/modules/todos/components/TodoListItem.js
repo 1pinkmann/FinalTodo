@@ -1,17 +1,19 @@
 import { ListItem, ListItemText } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import React from 'react';
+import { connect } from 'react-redux';
+import { handleRemoveTodo, handleToggleTodo } from './../store/actions/actions';
 
-export default function TodoListItem({ item, onToggle, onDelete }) {
+function TodoListItem({ item, handleToggleTodo, handleRemoveTodo }) {
 
     let onItemClick = () => {
-        onToggle(item.id);
+        handleToggleTodo(item);
     };
 
     let onDeleteBtnClick = (e) => {
         e.stopPropagation();
 
-        onDelete(item.id);
+        handleRemoveTodo(item.id);
     };
 
     return (
@@ -24,10 +26,17 @@ export default function TodoListItem({ item, onToggle, onDelete }) {
     );
 }
 
-function getItemStyle({ completed }) {
+function getItemStyle({ isDone }) {
     return {
         cursor: 'pointer',
-        backgroundColor: completed ? 'green' : 'yellow',
-        color: completed ? '#ffffff' : '#000000',
+        backgroundColor: isDone ? 'green' : 'yellow',
+        color: isDone ? '#ffffff' : '#000000',
     };
 }
+
+let mapDispatchToProps = {
+    handleRemoveTodo,
+    handleToggleTodo
+}
+
+export default connect(null, mapDispatchToProps)(TodoListItem);
